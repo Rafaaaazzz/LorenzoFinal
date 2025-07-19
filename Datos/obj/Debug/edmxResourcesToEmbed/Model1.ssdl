@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EF_ClinicaDentalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Consulta">
+    <Key>
+      <PropertyRef Name="ConsultaId" />
+    </Key>
+    <Property Name="ConsultaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TipoConsulta" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="FechaHoraConsulta" Type="datetime" Nullable="false" />
+    <Property Name="Realizada" Type="bit" Nullable="false" />
+    <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
+    <Property Name="Eliminado" Type="bit" Nullable="false" />
+    <Property Name="OdontologoId" Type="int" Nullable="false" />
+    <Property Name="PacienteId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Odontologo">
+    <Key>
+      <PropertyRef Name="OdontologoId" />
+    </Key>
+    <Property Name="OdontologoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CodigoOdontologo" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="NombreCompleto" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
+    <Property Name="Eliminado" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Paciente">
+    <Key>
+      <PropertyRef Name="PacienteId" />
+    </Key>
+    <Property Name="PacienteId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NombreCompleto" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="DNI" Type="varchar" MaxLength="12" Nullable="false" />
+    <Property Name="FechaNacimiento" Type="date" Nullable="false" />
+    <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
+    <Property Name="Eliminado" Type="bit" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Consulta_Odontologo">
+    <End Role="Odontologo" Type="Self.Odontologo" Multiplicity="1" />
+    <End Role="Consulta" Type="Self.Consulta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Odontologo">
+        <PropertyRef Name="OdontologoId" />
+      </Principal>
+      <Dependent Role="Consulta">
+        <PropertyRef Name="OdontologoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Consulta_Paciente">
+    <End Role="Paciente" Type="Self.Paciente" Multiplicity="1" />
+    <End Role="Consulta" Type="Self.Consulta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Paciente">
+        <PropertyRef Name="PacienteId" />
+      </Principal>
+      <Dependent Role="Consulta">
+        <PropertyRef Name="PacienteId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="EF_ClinicaDentalModelStoreContainer">
+    <EntitySet Name="Consulta" EntityType="Self.Consulta" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Odontologo" EntityType="Self.Odontologo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Paciente" EntityType="Self.Paciente" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Consulta_Odontologo" Association="Self.FK_Consulta_Odontologo">
+      <End Role="Odontologo" EntitySet="Odontologo" />
+      <End Role="Consulta" EntitySet="Consulta" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Consulta_Paciente" Association="Self.FK_Consulta_Paciente">
+      <End Role="Paciente" EntitySet="Paciente" />
+      <End Role="Consulta" EntitySet="Consulta" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

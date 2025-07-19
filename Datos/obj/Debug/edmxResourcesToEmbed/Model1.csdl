@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EF_ClinicaDentalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Consulta">
+    <Key>
+      <PropertyRef Name="ConsultaId" />
+    </Key>
+    <Property Name="ConsultaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TipoConsulta" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FechaHoraConsulta" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Realizada" Type="Boolean" Nullable="false" />
+    <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Eliminado" Type="Boolean" Nullable="false" />
+    <Property Name="OdontologoId" Type="Int32" Nullable="false" />
+    <Property Name="PacienteId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Odontologo" Relationship="Self.FK_Consulta_Odontologo" FromRole="Consulta" ToRole="Odontologo" />
+    <NavigationProperty Name="Paciente" Relationship="Self.FK_Consulta_Paciente" FromRole="Consulta" ToRole="Paciente" />
+  </EntityType>
+  <EntityType Name="Odontologo">
+    <Key>
+      <PropertyRef Name="OdontologoId" />
+    </Key>
+    <Property Name="OdontologoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CodigoOdontologo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NombreCompleto" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Activo" Type="Boolean" Nullable="false" />
+    <Property Name="Eliminado" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Consulta" Relationship="Self.FK_Consulta_Odontologo" FromRole="Odontologo" ToRole="Consulta" />
+  </EntityType>
+  <EntityType Name="Paciente">
+    <Key>
+      <PropertyRef Name="PacienteId" />
+    </Key>
+    <Property Name="PacienteId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NombreCompleto" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DNI" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FechaNacimiento" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Activo" Type="Boolean" Nullable="false" />
+    <Property Name="Eliminado" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Consulta" Relationship="Self.FK_Consulta_Paciente" FromRole="Paciente" ToRole="Consulta" />
+  </EntityType>
+  <Association Name="FK_Consulta_Odontologo">
+    <End Role="Odontologo" Type="Self.Odontologo" Multiplicity="1" />
+    <End Role="Consulta" Type="Self.Consulta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Odontologo">
+        <PropertyRef Name="OdontologoId" />
+      </Principal>
+      <Dependent Role="Consulta">
+        <PropertyRef Name="OdontologoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Consulta_Paciente">
+    <End Role="Paciente" Type="Self.Paciente" Multiplicity="1" />
+    <End Role="Consulta" Type="Self.Consulta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Paciente">
+        <PropertyRef Name="PacienteId" />
+      </Principal>
+      <Dependent Role="Consulta">
+        <PropertyRef Name="PacienteId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="EF_ClinicaDentalEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Consulta" EntityType="Self.Consulta" />
+    <EntitySet Name="Odontologo" EntityType="Self.Odontologo" />
+    <EntitySet Name="Paciente" EntityType="Self.Paciente" />
+    <AssociationSet Name="FK_Consulta_Odontologo" Association="Self.FK_Consulta_Odontologo">
+      <End Role="Odontologo" EntitySet="Odontologo" />
+      <End Role="Consulta" EntitySet="Consulta" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Consulta_Paciente" Association="Self.FK_Consulta_Paciente">
+      <End Role="Paciente" EntitySet="Paciente" />
+      <End Role="Consulta" EntitySet="Consulta" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
